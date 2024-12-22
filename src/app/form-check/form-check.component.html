@@ -1,0 +1,91 @@
+<!-- form-check.component.html -->
+<div class="form-container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="main-form">
+        <div class="form-header">
+            <h2>Create Group</h2>
+            <div class="form-group">
+                <label for="groupName">Group Name</label>
+                <input id="groupName" formControlName="groupName" type="text" placeholder="Enter group name"
+                    class="form-control" />
+            </div>
+        </div>
+
+        <div formArrayName="users" class="users-container">
+            <div *ngFor="let user of users.controls; let i = index" [formGroupName]="i" class="user-card">
+                <div class="user-header">
+                    <h3>User {{ i + 1 }}</h3>
+                    <button type="button" class="btn-remove" (click)="removeUser(i)">
+                        Remove User
+                    </button>
+                </div>
+
+                <div class="user-details">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name-{{ i }}">Name</label>
+                            <input id="name-{{ i }}" formControlName="name" type="text" placeholder="Enter name"
+                                class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email-{{ i }}">Email</label>
+                            <input id="email-{{ i }}" formControlName="email" type="email" placeholder="Enter email"
+                                class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="age-{{ i }}">Age</label>
+                            <input id="age-{{ i }}" formControlName="age" type="number" placeholder="Enter age"
+                                class="form-control" />
+                        </div>
+                    </div>
+
+                    <div formArrayName="addresses" class="addresses-container">
+                        <h4>Addresses</h4>
+                        <div *ngFor="let address of getUserAddresses(i).controls; let j = index" [formGroupName]="j"
+                            class="address-card">
+                            <div class="address-header">
+                                <span>Address {{ j + 1 }}</span>
+                                <button type="button" class="btn-remove-small" (click)="removeAddress(i, j)">
+                                    Remove
+                                </button>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="street-{{ i }}-{{ j }}">Street</label>
+                                    <input id="street-{{ i }}-{{ j }}" formControlName="street" type="text"
+                                        placeholder="Enter street" class="form-control" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="city-{{ i }}-{{ j }}">City</label>
+                                    <input id="city-{{ i }}-{{ j }}" formControlName="city" type="text"
+                                        placeholder="Enter city" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-add-small" (click)="addAddress(i)">
+                            + Add Address
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn-add" (click)="addUser()">
+                + Add User
+            </button>
+            <button type="submit" class="btn-submit">
+                Submit Form
+            </button>
+        </div>
+    </form>
+
+    <div *ngIf="submitted"  >
+        <h3>Form Submitted</h3>
+        <pre>{{ form.value | json }}</pre>
+    </div>
+</div>
